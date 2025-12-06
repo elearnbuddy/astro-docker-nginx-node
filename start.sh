@@ -7,3 +7,5 @@ nginx
 # Start the Node.js server in the foreground
 # If this crashes, the container will exit (which is what we want)
 exec node ./dist/server/entry.mjs
+
+echo "Server Listening on http://localhost:3000"
