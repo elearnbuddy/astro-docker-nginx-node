@@ -1,0 +1,28 @@
+---
+import Layout from "../components/Layout.astro";
+import Server from "../components/Server.astro";
+---
+
+<Layout title='My Astro App'>
+	<h1>About</h1>
+	<p>
+		Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi,
+		reprehenderit hic commodi provident repellat, qui, quo ipsum pariatur
+		repellendus nesciunt ad ut. Odit, asperiores numquam possimus facilis quam
+		libero perferendis?
+	</p>
+	<p>
+		Architecto similique ipsam accusantium fuga eligendi laudantium quia illo
+		recusandae labore est, ut explicabo. Quisquam fugiat optio aspernatur
+		voluptate, iusto facere, aut maxime vitae vero illum qui dignissimos, cumque
+		ea?
+	</p>
+	<p>
+		Ut eum quia distinctio unde velit ab quaerat alias laborum dolorum, facilis
+		mollitia quibusdam minus et obcaecati sed est! Id neque, sequi iure enim est
+		repudiandae officia consectetur quia porro!
+	</p>
+	<Server server:defer>
+		<div slot='fallback'>Loading...</div>
+	</Server>
+</Layout>

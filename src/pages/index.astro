@@ -1,16 +1,72 @@
 ---
-
+import Layout from "../components/Layout.astro";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title='My Astro App'>
+	<h1>Astro</h1>
+	<p>
+		Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit deleniti ipsum
+		unde, voluptate laboriosam quam hic consequatur libero, perferendis eaque,
+		suscipit accusamus ab commodi sed rem ipsa et soluta beatae.
+	</p>
+
+	<h2>Feedback Form</h2>
+	<form id='my-form' class='form'>
+		<div class='form-container'>
+			<label for='name'>Name</label>
+			<input type='text' name='name' id='name' />
+		</div>
+		<div class='form-container'>
+			<label for='email'>Email</label>
+			<input type='text' name='email' id='email' />
+		</div>
+		<div class='form-container'>
+			<label for='feedback'>Feedback</label>
+			<textarea name='feedback' id='feedback'></textarea>
+		</div>
+		<button type='submit' style='width: 100%;'>Submit</button>
+	</form>
+</Layout>
+
+<script>
+	import { isInputError } from "astro:actions";
+	import { actions } from "astro:actions";
+
+	const form = document.querySelector("#my-form") as
+		| HTMLFormElement
+		| undefined;
+
+	form
+		?.querySelector('button[type="submit"]')
+		?.addEventListener("click", () => {
+			form?.querySelectorAll("input, textarea").forEach((item) => {
+				(item as HTMLInputElement).setCustomValidity("");
+			});
+		});
+
+	form?.addEventListener("submit", async (e) => {
+		e.preventDefault();
+		const fd = Object.fromEntries(
+			new FormData(e.currentTarget as HTMLFormElement)
+		);
+
+		const { data, error } = await actions.submitFeedback(fd as any);
+
+		if (error) {
+			if (isInputError(error)) {
+				error.issues.forEach((x) => {
+					const key = x.path[0];
+					const currentField = form.querySelector(
+						`[name="${key}"]`
+					) as HTMLInputElement;
+					currentField.setCustomValidity(x.message);
+				});
+			}
+		}
+
+		if (data) {
+			console.log("Feedback submitted");
+			form.reset();
+		}
+	});
+</script>
